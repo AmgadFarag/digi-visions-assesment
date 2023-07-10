@@ -3,10 +3,10 @@ package amgadfarag.digivisions.filetree;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-// @SpringBootTest
-class FileTreeApplicationTests {
+@SpringBootTest
+class FiletreeApplicationTests {
 
-	// @Test
+	@Test
 	void contextLoads() {
 	}
 
