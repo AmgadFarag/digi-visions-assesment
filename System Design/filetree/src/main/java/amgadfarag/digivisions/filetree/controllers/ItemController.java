@@ -1,9 +1,9 @@
 package amgadfarag.digivisions.filetree.controllers;
 
-import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RestController;
 
-// @Res
+@RestController
 public class ItemController {
-    // private Logger log = Logger
+    // private Logger log = Logger.getLogger(ItemController.class);
     
 }
