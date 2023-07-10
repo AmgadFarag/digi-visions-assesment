@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:alpine
+    ports:
+      - "3304:3304"
+    environment:
+      POSTGRES_DB: filetreeDb
+      POSTGRES_PASSWORD: PostPassword
