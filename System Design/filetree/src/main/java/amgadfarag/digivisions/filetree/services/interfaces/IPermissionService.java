@@ -6,5 +6,5 @@ import amgadfarag.digivisions.filetree.enums.PermissionEnum;
 public interface IPermissionService {
     
     public Permission create(PermissionEnum permissionType);
-    
+    public void save(Permission permission);
 }

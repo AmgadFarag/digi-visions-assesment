@@ -1,5 +1,6 @@
 package amgadfarag.digivisions.filetree.services.impl;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import amgadfarag.digivisions.filetree.entities.Item;
 import amgadfarag.digivisions.filetree.entities.PermissionGroup;
 import amgadfarag.digivisions.filetree.enums.ItemType;
 import amgadfarag.digivisions.filetree.enums.PermissionGroupEnum;
+import amgadfarag.digivisions.filetree.repositories.ItemRepository;
 import amgadfarag.digivisions.filetree.services.interfaces.IItemService;
 import amgadfarag.digivisions.filetree.services.interfaces.IPermissionGroupService;
 
@@ -18,12 +20,15 @@ public class ItemService implements IItemService {
     private Logger log = Logger.getLogger(ItemService.class.getName());
 
     @Autowired
+    private ItemRepository itemRepository;
+    @Autowired
     private IPermissionGroupService permissionGroupService;
     
     @Override
     public Item createSpace(String spaceName){
-        // create item
-        Item space = new Item();
+        // check if folder exists
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(spaceName, ItemType.SPACE.toString().toLowerCase());
+        Item space = optionalItem.isPresent()? optionalItem.get() : new Item();
 
         // create permission group
         PermissionGroup permissionGroup = permissionGroupService.create(PermissionGroupEnum.ADMIN.toString().toLowerCase());
@@ -33,17 +38,16 @@ public class ItemService implements IItemService {
         space.setPermissionGroup(permissionGroup);
         space.setType(ItemType.SPACE.toString().toLowerCase());
 
-        //TODO Save Item
-
+        // Save Item
+        itemRepository.save(space);
         return space;
     }
 
     @Override
     public Item createFolder(String spaceName, String folderName) {
-        //TODO check if folder exists
-
-        // create item
-        Item folder = new Item();
+        // check if folder exists
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(folderName, ItemType.FOLDER.toString().toLowerCase());
+        Item folder = optionalItem.isPresent()? optionalItem.get() : new Item();
 
         // create permission group
         PermissionGroup permissionGroup = permissionGroupService.create(PermissionGroupEnum.EDIT_ONLY.toString().toLowerCase());
@@ -53,17 +57,17 @@ public class ItemService implements IItemService {
         folder.setPermissionGroup(permissionGroup);
         folder.setType(ItemType.FOLDER.toString().toLowerCase());
 
-        //TODO Save Item
-
+        // Save Item
+        itemRepository.save(folder);
         return folder;
     }
 
     @Override
     public Item createFile(String folderName, String fileName) {
-        //TODO check if file exists
+        // check if file exists
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(fileName, ItemType.FILE.toString().toLowerCase());
+        Item file = optionalItem.isPresent()? optionalItem.get() : new Item();
 
-        // create item
-        Item file = new Item();
         File fileBinary = new File();
 
         // create permission group
@@ -77,27 +81,30 @@ public class ItemService implements IItemService {
         fileBinary.setItem(file);
         fileBinary.setBinary(null);
 
-        //TODO Save Item
-
+        // Save Item
+        itemRepository.save(file);
         return file;
     }
 
 
     @Override
     public void deleteSpace(String spaceName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteSpace'");
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(spaceName, ItemType.SPACE.toString().toLowerCase());
+        if (optionalItem.isPresent() && optionalItem.get().getId() != null)
+            itemRepository.deleteById(optionalItem.get().getId());
     }
 
     @Override
     public void deleteFolder(String folderName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFolder'");
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(folderName, ItemType.FOLDER.toString().toLowerCase());
+        if (optionalItem.isPresent() && optionalItem.get().getId() != null)
+            itemRepository.deleteById(optionalItem.get().getId());
     }
 
     @Override
     public void deleteFile(String fileName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFile'");
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(fileName, ItemType.FILE.toString().toLowerCase());
+        if (optionalItem.isPresent() && optionalItem.get().getId() != null)
+            itemRepository.deleteById(optionalItem.get().getId());
     }
 }
