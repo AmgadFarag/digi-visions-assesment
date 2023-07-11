@@ -14,13 +14,27 @@ public class ItemController {
     private Logger log = Logger.getLogger(ItemController.class.getName());
 
     @Autowired
-    private IItemService spaceService;
+    private IItemService itemService;
 
     @GetMapping("/create-space")
     private ResponseEntity createSpace() {
-        spaceService.createSpace("stc-assessments");
-
+        itemService.createSpace("stc-assessments");
         return ResponseEntity.ok().build();
     }
+    
+
+    @GetMapping("/create-folder")
+    private ResponseEntity createFolder() {
+        itemService.createFolder("stc-assessments", "backend");
+        return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping("/create-file")
+    private ResponseEntity createFile() {
+        itemService.createFile("backend", "assessment.pdf");
+        return ResponseEntity.ok().build();
+    }
+
     
 }

@@ -14,6 +14,9 @@ public class PermissionService implements IPermissionService {
 
     @Override
     public Permission create(PermissionEnum permissionType) {
+        //TODO check if permission eists
+
+        // create permission
         Permission permission = new Permission();
 
         //TODO Fill Permission

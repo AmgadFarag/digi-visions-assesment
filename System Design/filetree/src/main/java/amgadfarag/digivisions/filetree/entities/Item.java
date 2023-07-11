@@ -21,10 +21,10 @@ public class Item {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @Column(name="type", nullable=false, unique=false)
+    @Column(name="type", nullable=false, unique=true)
     private String type;
     
-    @Column(name="name", nullable=false, unique=false)
+    @Column(name="name", nullable=false, unique=true)
     private String name;
     
     @ManyToOne

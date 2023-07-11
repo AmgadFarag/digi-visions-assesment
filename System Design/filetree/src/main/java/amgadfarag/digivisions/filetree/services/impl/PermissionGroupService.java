@@ -19,14 +19,42 @@ public class PermissionGroupService implements IPermissionGroupService {
     private IPermissionService permissionService;
 
     public PermissionGroup create(String name) {
+        //TODO check if group exists
+
         // create Permission Group
         PermissionGroup permissionGroup = new PermissionGroup();
+
+        //TODO check if permissions exists
 
         // create permissions
         Permission viewPermission = permissionService.create(PermissionEnum.VIEW);
         Permission editPermission = permissionService.create(PermissionEnum.EDIT);
 
-        //TODO Fill PermissionGroup
+        //TODO Fill & Save PermissionGroup
+        permissionGroup.setGroupName(name);
+
+
+        //TODO Fill & Save Permissions
+        viewPermission.setUserEmail("viewingUser@dummy.email");
+        editPermission.setUserEmail("editingUser@dummy.email");
+        switch(name) {
+            case "admin": 
+            viewPermission.setPermissionGroup(permissionGroup);
+            viewPermission.setPermissionLevel("0");
+            editPermission.setPermissionGroup(permissionGroup);
+            editPermission.setPermissionLevel("0");
+            break;
+            case "edit-only": 
+            editPermission.setPermissionGroup(permissionGroup);
+            editPermission.setPermissionLevel("1");
+            break;
+            case "view-only": 
+            viewPermission.setPermissionGroup(permissionGroup);
+            viewPermission.setPermissionLevel("1");
+            break;
+            default:break;
+        }
+        
 
         return permissionGroup;
     }
