@@ -20,11 +20,11 @@ public class PermissionService implements IPermissionService {
 
     @Override
     public Permission create(PermissionEnum permissionType) {
-        // check if permission eists
+        log.info("check if permission eists");
         Optional<Permission> optionalPermission = permissionRepository.findByPermissionLevel(permissionType.toString().toLowerCase());
         Permission permission = optionalPermission.isPresent()? optionalPermission.get() : new Permission();
 
-        // Fill Permission
+        log.info("Fill Permission");
         if (permissionType.equals(PermissionEnum.VIEW)) {
             permission.setUserEmail("viewingUser@dummy.email");
             permission.setPermissionLevel("view");
@@ -35,7 +35,7 @@ public class PermissionService implements IPermissionService {
             permission.setPermissionLevel("edit");
         }
         
-        // Save Permission
+        log.info("save Permission");
         permissionRepository.save(permission);
 
         return permission;

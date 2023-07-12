@@ -23,19 +23,19 @@ public class PermissionGroupService implements IPermissionGroupService {
     private IPermissionService permissionService;
 
     public PermissionGroup create(String name) {
-        // check if group exists
+        log.info("check if group exists");
         Optional<PermissionGroup> optionalItem = groupRepository.findByGroupName(name);
         PermissionGroup permissionGroup = optionalItem.isPresent()? optionalItem.get() : new PermissionGroup();
 
-        // create permissions
+        log.info("create permissions");
         Permission viewPermission = permissionService.create(PermissionEnum.VIEW);
         Permission editPermission = permissionService.create(PermissionEnum.EDIT);
 
-        // Fill & Save PermissionGroup
+        log.info("Fill & Save PermissionGroup");
         permissionGroup.setGroupName(name);
         groupRepository.save(permissionGroup);
 
-        // Fill & Save Permissions
+        log.info("Fill & Save Permissions");
         switch(name) {
             case "admin": 
             viewPermission.setPermissionGroup(permissionGroup);
