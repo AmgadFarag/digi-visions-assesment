@@ -29,7 +29,7 @@ public class ItemService implements IItemService {
     
     @Override
     public Item createSpace(String spaceName) {
-        log.info("check if folder exists");
+        log.info("check if spcae exists");
         Optional<Item> optionalItem = itemRepository.findByNameAndType(spaceName, ItemType.SPACE.toString().toLowerCase());
         Item space = optionalItem.isPresent()? optionalItem.get() : new Item();
 
@@ -49,8 +49,12 @@ public class ItemService implements IItemService {
     @Override
     public Item createFolder(String spaceName, String folderName) {
         log.info("check if folder exists");
-        Optional<Item> optionalItem = itemRepository.findByNameAndType(folderName, ItemType.FOLDER.toString().toLowerCase());
-        Item folder = optionalItem.isPresent()? optionalItem.get() : new Item();
+        Optional<Item> optionalFolder = itemRepository.findByNameAndType(folderName, ItemType.FOLDER.toString().toLowerCase());
+        Item folder = optionalFolder.isPresent()? optionalFolder.get() : new Item();
+
+        log.info("check if spcae exists");
+        Optional<Item> optionalSpace = itemRepository.findByNameAndType(spaceName, ItemType.SPACE.toString().toLowerCase());
+        Item space = optionalSpace.isPresent()? optionalSpace.get() : new Item();
 
         log.info("create permission group");
         PermissionGroup permissionGroup = permissionGroupService.create(PermissionGroupEnum.EDIT_ONLY.toString().toLowerCase());
@@ -59,6 +63,7 @@ public class ItemService implements IItemService {
         folder.setName(folderName);
         folder.setPermissionGroup(permissionGroup);
         folder.setType(ItemType.FOLDER.toString().toLowerCase());
+        folder.setParent(space.getName()+"/");
 
         log.info("save Item");
         itemRepository.save(folder);
@@ -68,8 +73,12 @@ public class ItemService implements IItemService {
     @Override
     public Item createFile(String folderName, String fileName, MultipartFile multipartFile) {
         log.info("check if file exists");
-        Optional<Item> optionalItem = itemRepository.findByNameAndType(fileName, ItemType.FILE.toString().toLowerCase());
-        Item file = optionalItem.isPresent()? optionalItem.get() : new Item();
+        Optional<Item> optionalFile = itemRepository.findByNameAndType(fileName, ItemType.FILE.toString().toLowerCase());
+        Item file = optionalFile.isPresent()? optionalFile.get() : new Item();
+
+        log.info("check if folder exists");
+        Optional<Item> optionalFolder = itemRepository.findByNameAndType(folderName, ItemType.FOLDER.toString().toLowerCase());
+        Item folder = optionalFolder.isPresent()? optionalFolder.get() : new Item();
 
         File fileBinary = new File();
 
@@ -80,6 +89,7 @@ public class ItemService implements IItemService {
         file.setName(fileName);
         file.setPermissionGroup(permissionGroup);
         file.setType(ItemType.FILE.toString().toLowerCase());
+        file.setParent(folder.getParent()+"/"+folder.getName()+"/");
 
         fileBinary.setItem(file);
         try {
@@ -92,6 +102,19 @@ public class ItemService implements IItemService {
         log.info("save Item");
         itemRepository.save(file);
         return file;
+    }
+
+    @Override
+    public Item getByNameAndType(String name, ItemType type) {
+        log.info("check if item exists");
+        Optional<Item> optionalItem = itemRepository.findByNameAndType(name, type.toString().toLowerCase());
+        if (optionalItem.isPresent()) {
+            log.info(name + " found");
+            return optionalItem.get();
+        }else{
+            log.info(name + " not found");
+            return null;
+        }
     }
 
 
