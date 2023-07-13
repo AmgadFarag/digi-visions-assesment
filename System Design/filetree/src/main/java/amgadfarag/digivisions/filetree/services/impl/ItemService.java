@@ -6,10 +6,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import amgadfarag.digivisions.filetree.entities.File;
+import amgadfarag.digivisions.filetree.entities.FileBinary;
 import amgadfarag.digivisions.filetree.entities.Item;
 import amgadfarag.digivisions.filetree.entities.PermissionGroup;
 import amgadfarag.digivisions.filetree.enums.ItemType;
@@ -19,6 +20,7 @@ import amgadfarag.digivisions.filetree.services.interfaces.IItemService;
 import amgadfarag.digivisions.filetree.services.interfaces.IPermissionGroupService;
 
 @Service
+@Component
 public class ItemService implements IItemService {
     private Logger log = Logger.getLogger(ItemService.class.getName());
 
@@ -80,7 +82,7 @@ public class ItemService implements IItemService {
         Optional<Item> optionalFolder = itemRepository.findByNameAndType(folderName, ItemType.FOLDER.toString().toLowerCase());
         Item folder = optionalFolder.isPresent()? optionalFolder.get() : new Item();
 
-        File fileBinary = new File();
+        FileBinary fileBinary = new FileBinary();
 
         log.info("create permission group");
         PermissionGroup permissionGroup = permissionGroupService.create(PermissionGroupEnum.EDIT_ONLY.toString().toLowerCase());

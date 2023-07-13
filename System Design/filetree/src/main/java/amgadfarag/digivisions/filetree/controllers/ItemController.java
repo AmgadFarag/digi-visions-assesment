@@ -5,13 +5,13 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.integration.http.multipart.UploadedMultipartFile;
-import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +20,9 @@ import amgadfarag.digivisions.filetree.entities.Item;
 import amgadfarag.digivisions.filetree.enums.ItemType;
 import amgadfarag.digivisions.filetree.services.interfaces.IItemService;
 
-@RestController("/api/item")
+@RestController
+@RequestMapping("/api/item")
+@Component
 public class ItemController {
     private Logger log = Logger.getLogger(ItemController.class.getName());
 
@@ -28,13 +30,14 @@ public class ItemController {
     private IItemService itemService;
 
     @GetMapping("/create-space")
-    private ResponseEntity createSpace(@RequestParam String spaceName) {
+    private ResponseEntity createSpace(@RequestParam(name="spaceName", required=false) String spaceName) {
+        log.info("Request recieved");
         if (spaceName == null || spaceName.equalsIgnoreCase("")) {
             spaceName = "stc-assessments";
         }
         try{
             itemService.createSpace(spaceName);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Success");
         } catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -42,7 +45,9 @@ public class ItemController {
     
 
     @GetMapping("/create-folder")
-    private ResponseEntity createFolder(@RequestParam String spaceName, @RequestParam String folderName) {
+    private ResponseEntity createFolder(@RequestParam(name="spaceName", required=false) String spaceName,
+                                        @RequestParam(name="folderName", required=false) String folderName) {
+        log.info("Request recieved");
         if (folderName == null || folderName.equalsIgnoreCase("")) {
             folderName = "backend";
         }
@@ -51,7 +56,7 @@ public class ItemController {
         }
         try{
             itemService.createFolder(spaceName, folderName);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Success");
         } catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -59,7 +64,9 @@ public class ItemController {
 
 
     @PostMapping("/create-file")
-    private ResponseEntity createFile(String folderName, String fileName, @RequestBody MultipartFile file) {
+    private ResponseEntity createFile(@RequestParam(name="folderName", required=false) String folderName,
+                                    @RequestParam(name="fileName", required=false) String fileName, @RequestBody MultipartFile file) {
+        log.info("Request recieved");
         if (folderName == null || folderName.equalsIgnoreCase("")) {
             folderName = "backend";
         }
@@ -71,7 +78,7 @@ public class ItemController {
         }
         try{
             itemService.createFile(folderName, fileName, file);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Success");
         } catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -79,7 +86,8 @@ public class ItemController {
 
 
     @GetMapping("/view")
-    public ResponseEntity<Item> viewFile(String fileName) {
+    public ResponseEntity<Item> viewFile(@RequestParam(name="fileName", required=false) String fileName) {
+        log.info("Request recieved");
         if (fileName == null || fileName.equalsIgnoreCase("")) {
             fileName = "assessment.pdf";
         }

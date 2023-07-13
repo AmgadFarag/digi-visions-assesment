@@ -13,21 +13,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="file")
+@Table(name="file_binary")
 @Data
 @NoArgsConstructor
-public class File {
+public class FileBinary {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Lob
-    @Column(name="binary", nullable=false, unique=false)
+    @Column(name="binary", nullable=false)
     private byte[] binary;
     
     @ManyToOne
-    @JoinColumn(name="item_id", nullable=false, unique=false)
+    @JoinColumn(name="item_id", nullable=false)
     private Item item;
     
 }

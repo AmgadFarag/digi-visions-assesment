@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import amgadfarag.digivisions.filetree.entities.Permission;
+import amgadfarag.digivisions.filetree.entities.PermissionGroup;
 import amgadfarag.digivisions.filetree.enums.PermissionEnum;
 import amgadfarag.digivisions.filetree.repositories.PermissionRepository;
 import amgadfarag.digivisions.filetree.services.interfaces.IPermissionService;
