@@ -18,6 +18,13 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.2.6.Final</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.integration/spring-integration-http -->
 		<dependency>
 			<groupId>org.springframework.integration</groupId>

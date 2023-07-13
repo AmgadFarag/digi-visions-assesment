@@ -12,6 +12,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class ItemController {
     private IItemService itemService;
 
     @GetMapping("/create-space")
-    private ResponseEntity createSpace(String spaceName) {
+    private ResponseEntity createSpace(@RequestParam String spaceName) {
         if (spaceName == null || spaceName.equalsIgnoreCase("")) {
             spaceName = "stc-assessments";
         }
@@ -41,7 +42,7 @@ public class ItemController {
     
 
     @GetMapping("/create-folder")
-    private ResponseEntity createFolder(String spaceName, String folderName) {
+    private ResponseEntity createFolder(@RequestParam String spaceName, @RequestParam String folderName) {
         if (folderName == null || folderName.equalsIgnoreCase("")) {
             folderName = "backend";
         }

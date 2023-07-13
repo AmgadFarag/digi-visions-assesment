@@ -23,7 +23,6 @@ public class File {
     private Long id;
 
     @Lob
-    // @Type(type = "org.hibernate.type.BinaryType")
     @Column(name="binary", nullable=false, unique=false)
     private byte[] binary;
     
