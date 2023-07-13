@@ -85,7 +85,7 @@ public class ItemController {
     }
 
 
-    @GetMapping("/view")
+    @GetMapping("/view-file")
     public ResponseEntity<Item> viewFile(@RequestParam(name="fileName", required=false) String fileName) {
         log.info("Request recieved");
         if (fileName == null || fileName.equalsIgnoreCase("")) {

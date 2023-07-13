@@ -91,7 +91,7 @@ public class ItemService implements IItemService {
         file.setName(fileName);
         file.setPermissionGroup(permissionGroup);
         file.setType(ItemType.FILE.toString().toLowerCase());
-        file.setParent(folder.getParent()+"/"+folder.getName()+"/");
+        file.setParent(folder.getParent()+folder.getName()+"/");
 
         fileBinary.setItem(file);
         try {
